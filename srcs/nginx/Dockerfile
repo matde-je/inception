@@ -17,3 +17,4 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon of;"]
 #run in foreground
+#nginx is the executable for the Nginx web server
