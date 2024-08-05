@@ -1,14 +1,62 @@
 version: "3.8" #latest
 
 mariadb:
-  image: mariadb:matde-je
+  image: mariadb:mat #docker build 
   container_name: mariadb
-  build: ./mariadb
+  build: ./mariadb #build image
   volumes:
     - mariadb:/var/lib/mysql
+  env_file:
+    - .env
+  networks:
+    - inception #docker compose up
+  restart: always
+
+nginx:
+  image: nginx:mat
+  container_name: nginx
+  build: ./nginx
+  ports:
+    - "443:443" #HTTPS (ssl) traffic
+  depends_on:
+    - wordpress #nginx handles incoming HTTP/HTTPS requests and forwards them to WordPress
+  volumes:
+    - wordpress:/var/www/wordpress
+  networks:
+    - inception
+  restart: always
+
+wordpress:
+  image: wordpress:mat
+  container_name: wordpress
+  build: ./wordpress
+  depends_on:
+    - mariadb #wp needs data base
+  volumes:
+    - wordpress:/var/www/wordpress
   env_file:
     - .env
   networks:
     - inception
   restart: always
 
+
+volumes: #stored on the host machine and persist beyond the lifecycle of the containers
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      device: /home/data/mariadb
+      o: bind #share data between host and container, access, modify info form host and container
+      type: none
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/data/wordpress
+      o: bind
+      type: none
+
+networks:
+  inception:
+    name: inception
