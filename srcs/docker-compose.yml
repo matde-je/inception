@@ -1,0 +1,14 @@
+version: "3.8" #latest
+
+mariadb:
+  image: mariadb:matde-je
+  container_name: mariadb
+  build: ./mariadb
+  volumes:
+    - mariadb:/var/lib/mysql
+  env_file:
+    - .env
+  networks:
+    - inception
+  restart: always
+

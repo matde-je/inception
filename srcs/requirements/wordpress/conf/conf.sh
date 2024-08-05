@@ -37,14 +37,14 @@ while [ $(date +%s) -lt $end ]; do #less than
     fi #close if
 done
 
-if [ $(date +%s) -ge $end ]; then #greater or equal to
+if [ $(date +%s) -ge $end ]; then #greater or equal
     echo "[MARIADB NOT RESPONDING]"
 fi
 
 
 wp core download --allow-root
 
-wp core config --dbhost=mariadb:3306 --dbname="$SQL_DB" --dbuser="$SQL_USER" --dbpass="$SQL_PASS" --allow-root
+wp core config --dbhost=mariadb:3306 --dbname="$MYSQL_DB" --dbuser="$MYSQL_USER" --dbpass="$MYSQL_PASS" --allow-root
 
 wp core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_ADMIN_U" --admin_password="$WP_ADMIN_P" --admin_email="$WP_ADMIN_E" --allow-root
 
@@ -57,5 +57,5 @@ mkdir -p /run/php
 #pid, active process
 
 /usr/sbin/php-fpm7.4 -F
-#starts the PHP-FPM service in the foreground to keep the container running
+#starts the PHP-FPM service in the -Foreground to keep the container running
 
