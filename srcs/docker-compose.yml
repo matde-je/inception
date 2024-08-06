@@ -1,47 +1,47 @@
 version: "3.8" #latest
 
-mariadb:
-  image: mariadb:mat #docker build 
-  container_name: mariadb
-  build: ./mariadb #build image
-  volumes:
-    - mariadb:/var/lib/mysql
-  env_file:
-    - .env
-  networks:
-    - inception #docker compose up
-  restart: always
+services:
+  mariadb:
+    image: mariadb:mat #docker build 
+    container_name: mariadb
+    build: ./requirements/mariadb #build image
+    volumes:
+      - mariadb:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      - inception #docker compose up
+    restart: always
 
-nginx:
-  image: nginx:mat
-  container_name: nginx
-  build: ./nginx
-  ports:
-    - "443:443" #HTTPS (ssl) traffic
-  depends_on:
-    - wordpress #nginx handles incoming HTTP/HTTPS requests and forwards them to WordPress
-  volumes:
-    - wordpress:/var/www/wordpress
-  networks:
-    - inception
-  restart: always
+  wordpress:
+    image: wordpress:mat
+    container_name: wordpress
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb #wp needs data base
+    volumes:
+      - wordpress:/var/www/wordpress
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: always
 
-wordpress:
-  image: wordpress:mat
-  container_name: wordpress
-  build: ./wordpress
-  depends_on:
-    - mariadb #wp needs data base
-  volumes:
-    - wordpress:/var/www/wordpress
-  env_file:
-    - .env
-  networks:
-    - inception
-  restart: always
+  nginx:
+    image: nginx:mat
+    container_name: nginx
+    build: ./requirements/nginx
+    ports:
+      - "443:443" #HTTPS (ssl) traffic
+    depends_on:
+      - wordpress #nginx handles incoming HTTP/HTTPS requests and forwards them to WordPress
+    volumes:
+      - wordpress:/var/www/wordpress
+    networks:
+      - inception
+    restart: always
 
-
-volumes: #stored on the host machine and persist beyond the lifecycle of the containers
+volumes: #stored on host machine and persist beyond lifecycle of containers
   mariadb:
     name: mariadb
     driver: local

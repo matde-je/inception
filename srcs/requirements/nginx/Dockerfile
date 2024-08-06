@@ -14,7 +14,7 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/ngin
 RUN mkdir -p /var/www/wordpress && chown -R www-data:www-data /var/www/wordpress
 #set ownership of the dir recursively all files to default user
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon of;"]
 #run in foreground

@@ -4,7 +4,7 @@ service mariadb start
 
 sleep 5
 
-mariadb < ./setup.sql
+mariadb < ../tools/setup.sql
 
 mysqladmin -u root -p$MYSQL_ROOT_PASS shutdown
 
