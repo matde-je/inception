@@ -41,11 +41,11 @@ if [ $(date +%s) -ge $end ]; then #greater or equal
     echo "[MARIADB NOT RESPONDING]"
 fi
 
-
 check_files() {
     wp core is-installed --allow-root > /dev/null
     return $?
 }
+
 if ! check_files; then
     echo "[WP INSTALLATION STARTED]"
     find /var/www/wordpress/ -mindepth 1 -delete
@@ -56,7 +56,6 @@ if ! check_files; then
 else
     echo "[WordPress files already exist. Skipping installation]"
 fi
-
 
 sed -i '36 s@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf
 #stream editor, change unix socket to port 9000 for network communication
