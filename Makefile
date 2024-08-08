@@ -4,6 +4,8 @@ all: up
 up: build
 	sudo mkdir -p /home/data/wordpress
 	sudo mkdir -p /home/data/mariadb 
+	sudo chmod -R 755 /home/data/wordpress
+	sudo chmod -R 755 /home/data/mariadb
 	docker-compose -f ./srcs/docker-compose.yml up -d
 
 #stop containers

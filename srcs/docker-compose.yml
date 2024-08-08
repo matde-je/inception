@@ -1,5 +1,26 @@
 version: "3.8" #latest
 
+volumes: #stored on host machine and persist beyond lifecycle of containers
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      device: /home/data/mariadb
+      o: bind #share data between host and container, access, modify info form host and container
+      type: none
+
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/data/wordpress
+      o: bind
+      type: none
+
+networks:
+  inception:
+    name: inception
+
 services:
   mariadb:
     image: mariadb:mat #docker build 
@@ -11,20 +32,6 @@ services:
       - .env
     networks:
       - inception #docker compose up
-    restart: always
-
-  wordpress:
-    image: wordpress:mat
-    container_name: wordpress
-    build: ./requirements/wordpress
-    depends_on:
-      - mariadb #wp needs data base
-    volumes:
-      - wordpress:/var/www/wordpress
-    env_file:
-      - .env
-    networks:
-      - inception
     restart: always
 
   nginx:
@@ -41,22 +48,17 @@ services:
       - inception
     restart: always
 
-volumes: #stored on host machine and persist beyond lifecycle of containers
-  mariadb:
-    name: mariadb
-    driver: local
-    driver_opts:
-      device: /home/data/mariadb
-      o: bind #share data between host and container, access, modify info form host and container
-      type: none
   wordpress:
-    name: wordpress
-    driver: local
-    driver_opts:
-      device: /home/data/wordpress
-      o: bind
-      type: none
+    image: wordpress:mat
+    container_name: wordpress
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb #wp needs data base
+    volumes:
+      - wordpress:/var/www/wordpress
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: always
 
-networks:
-  inception:
-    name: inception
