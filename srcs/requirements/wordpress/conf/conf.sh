@@ -17,9 +17,9 @@ chown -R www-data:www-data /var/www/wordpress
 #change owner of WordPress dir and content to www-data user and group :
 
 
-ping_mariadb() {
-    nc -z mariadb 3306   #-zv used to scan for listening daemons; port 3306; check connection
-    return $? #return exit status of ping
+connect_mariadb() {
+    nc -z mariadb 3306   #-z used to scan for listening daemons; port 3306; check connection
+    return $? #return exit status of connection
 }
 
 start=$(date +%s) #current time in seconds
@@ -27,7 +27,7 @@ end=$((start + 20)) #20 seconds after start time, (()) are used for arithmetic e
 
 #loop until MariaDB is up or timeout
 while [ $(date +%s) -lt $end ]; do #less than
-    ping_mariadb
+    connect_mariadb
     if [ $? -eq 0 ]; then #ping successful; equal to
         echo "[MARIADB UP AND RUNNING]"
         break 

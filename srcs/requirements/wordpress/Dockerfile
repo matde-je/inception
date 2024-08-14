@@ -7,4 +7,3 @@ COPY conf/conf.sh /
 RUN chmod +x ./conf.sh
 
 ENTRYPOINT [ "./conf.sh" ]
-

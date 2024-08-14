@@ -1,11 +1,12 @@
 version: "3.8" #latest
 
+#bind mounts
 volumes: #stored on host machine and persist beyond lifecycle of containers
   mariadb:
     name: mariadb
     driver: local
     driver_opts:
-      device: /home/data/mariadb
+      device: /home/matde-je/data
       o: bind #share data between host and container, access, modify info form host and container
       type: none
 
@@ -13,17 +14,19 @@ volumes: #stored on host machine and persist beyond lifecycle of containers
     name: wordpress
     driver: local
     driver_opts:
-      device: /home/data/wordpress
+      device: /home/matde-je/data
       o: bind
       type: none
 
+#user defined bridge network by default
+#containers can use their service names to communicate with each other
 networks:
-  inception:
-    name: inception
+  intertwin:
+    name: intertwin
 
 services:
   mariadb:
-    image: mariadb:mat #docker build 
+    image: mariadb #docker build 
     container_name: mariadb
     build: ./requirements/mariadb #build image
     volumes:
@@ -31,11 +34,11 @@ services:
     env_file:
       - .env
     networks:
-      - inception #docker compose up
+      - intertwin #docker compose up
     restart: always
 
   nginx:
-    image: nginx:mat
+    image: nginx
     container_name: nginx
     build: ./requirements/nginx
     ports:
@@ -45,11 +48,11 @@ services:
     volumes:
       - wordpress:/var/www/wordpress
     networks:
-      - inception
+      - intertwin
     restart: always
 
   wordpress:
-    image: wordpress:mat
+    image: wordpress
     container_name: wordpress
     build: ./requirements/wordpress
     depends_on:
@@ -59,6 +62,5 @@ services:
     env_file:
       - .env
     networks:
-      - inception
+      - intertwin
     restart: always
-
