@@ -3,10 +3,10 @@ all: up
 #start containers in background and leave them running
 #create network and volumes
 up: build
-	sudo mkdir -p /home/matde-je/data/wordpress
-	sudo mkdir -p /home/matde-je/data/mariadb 
-	sudo chmod -R 755 /home/matde-je/data/wordpress
-	sudo chmod -R 755 /home/matde-je/data/mariadb
+	mkdir -p /home/matde-je/data/wordpress
+	mkdir -p /home/matde-je/data/mariadb 
+	chmod -R 755 /home/matde-je/data/wordpress
+	chmod -R 755 /home/matde-je/data/mariadb
 	docker-compose -f ./srcs/docker-compose.yml up -d 
 
 #stop containers

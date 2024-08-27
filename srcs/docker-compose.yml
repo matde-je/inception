@@ -6,7 +6,7 @@ volumes: #stored on host machine and persist beyond lifecycle of containers
     name: mariadb
     driver: local
     driver_opts:
-      device: /home/matde-je/data
+      device: /home/matde-je/data/mariadb
       o: bind #share data between host and container, access, modify info form host and container
       type: none
 
@@ -14,7 +14,7 @@ volumes: #stored on host machine and persist beyond lifecycle of containers
     name: wordpress
     driver: local
     driver_opts:
-      device: /home/matde-je/data
+      device: /home/matde-je/data/wordpress
       o: bind
       type: none
 
