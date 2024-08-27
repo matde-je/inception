@@ -1,7 +1,7 @@
 FROM debian:bullseye
 #base image
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y procps curl && apt-get install -y nginx openssl 
+RUN apt-get update && apt-get upgrade -y && apt-get install -y procps curl nginx openssl 
     #&& apt-get install -y php7.4 php7.4-fpm
 
 RUN mkdir -p /etc/nginx/ssl

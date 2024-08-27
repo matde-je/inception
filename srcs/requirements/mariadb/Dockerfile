@@ -1,7 +1,6 @@
 FROM debian:bullseye
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server && apt-get install -y net-tools \
-    && apt-get install -y procps
+RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server net-tools procps
 # -y to automatically answer yes to all prompts
 
 COPY ./conf/config.sh /config.sh 
