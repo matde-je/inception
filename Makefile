@@ -9,14 +9,6 @@ up: build
 	chmod -R 755 /home/matde-je/data/mariadb
 	docker-compose -f ./srcs/docker-compose.yml up -d 
 
-#stop containers
-down:
-	docker-compose -f ./srcs/docker-compose.yml down
-
-#containers remain on the system and can be restarted later
-stop:
-	docker-compose -f ./srcs/docker-compose.yml stop
-
 start:
 	docker-compose -f ./srcs/docker-compose.yml start
 
